@@ -17,27 +17,22 @@ def generate_launch_description():
     twist_mux = Node(
             package="twist_mux",
             executable="twist_mux",
-            parameters=[twist_mux_params, {'use_sim_time': True}],
+            parameters=[twist_mux_params, {'use_sim_time': False}],
             remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
         )
-
-
-    slam_toolbox_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'mapper_params_online_async.yaml')
 
     slam_toolbox = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','online_async_launch.py'
-                )]), launch_arguments={'use_sim_time': 'false', 'params_file': slam_toolbox_params_file}.items()
+                )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
 
     delayed_slam_toolbox = TimerAction(period=5.0, actions=[slam_toolbox])
 
-    nav2_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'nav2_params.yaml')
-
     navigation = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','navigation_launch.py'
-                )]), launch_arguments={'use_sim_time': 'false', 'params_file': nav2_params_file}.items()
+                )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
 
     delayed_navigation = TimerAction(period=10.0, actions=[navigation])
@@ -52,6 +47,6 @@ def generate_launch_description():
         twist_mux,
         slam_toolbox,
         #delayed_slam_toolbox,
-        #navigation,
-        delayed_navigation,
+        navigation,
+        #delayed_navigation,
     ])
