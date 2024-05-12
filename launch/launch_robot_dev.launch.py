@@ -27,15 +27,13 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
 
-    delayed_slam_toolbox = TimerAction(period=5.0, actions=[slam_toolbox])
+    nav2_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'nav2_params.yaml')
 
     navigation = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','navigation_launch.py'
-                )]), launch_arguments={'use_sim_time': 'false'}.items()
+                )]), launch_arguments={'use_sim_time': 'false', 'params_file': nav2_params_file}.items()
     )
-
-    delayed_navigation = TimerAction(period=10.0, actions=[navigation])
 
     rviz_node = ExecuteProcess(
         cmd=['rviz2'],
@@ -46,7 +44,5 @@ def generate_launch_description():
         rviz_node,
         twist_mux,
         slam_toolbox,
-        #delayed_slam_toolbox,
-        navigation,
-        #delayed_navigation,
+        navigation
     ])
