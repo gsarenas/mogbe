@@ -35,6 +35,8 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false', 'params_file': nav2_params_file}.items()
     )
 
+    delayed_navigation = TimerAction(period=10.0, actions=[navigation])
+
     rviz_node = ExecuteProcess(
         cmd=['rviz2'],
         output='screen'
@@ -44,5 +46,5 @@ def generate_launch_description():
         rviz_node,
         twist_mux,
         slam_toolbox,
-        navigation
+        delayed_navigation
     ])
