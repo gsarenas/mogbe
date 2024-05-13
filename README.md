@@ -164,10 +164,10 @@ cd ~ && mkdir -p mogbe_ws/src && cd mogbe_ws/
 - Clone os repositórios:
 
 ```bash
-git clone https://github.com/gsarenas/mogbe.git src && \
-git clone https://github.com/gsarenas/serial.git src && \
-git clone https://github.com/gsarenas/diffdrive_arduino.git src && \
-git clone https://github.com/gsarenas/ldlidar_stl_ros2.git src
+git clone https://github.com/gsarenas/mogbe.git src/mogbe && \
+git clone https://github.com/gsarenas/serial.git src/serial && \
+git clone https://github.com/gsarenas/diffdrive_arduino.git src/diffdrive_arduino && \
+git clone https://github.com/gsarenas/ldlidar_stl_ros2.git src/ldlidar_stl_ros2
 ```
 
 - Inicie `rosdep` se ainda não tiver feito:
