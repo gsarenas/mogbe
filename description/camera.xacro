@@ -12,7 +12,7 @@
             <geometry>
                 <!--<mesh filename="package://mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> SÓ FUNCIONA COM RVIZ -->
                 <!--<mesh filename="file://$(find mogbe)/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> FUNCIONA COM GAZEBO E RVIZ SOMENTE EM SIMULAÇÃO -->
-                <mesh filename="file:///home/dev/dev_ws/src/mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIM E REAL -->
+                <mesh filename="file:///home/dev/mogbe_ws/src/mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIM E REAL -->
             </geometry>
         </visual>
     </link>

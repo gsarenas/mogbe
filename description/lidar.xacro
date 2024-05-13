@@ -13,7 +13,7 @@
                 <!--<cylinder radius="0.05" length="0.04"/>-->
                 <!--<mesh filename="file://$(find mogbe)/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> SÓ FUNCIONA COM RVIZ -->
                 <!-- <mesh filename="file://$(find mogbe)/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> FUNCIONA COM GAZEBO E RVIZ SOMENTE EM SIMULAÇÃO -->
-                <mesh filename="file:///home/dev/dev_ws/src/mogbe/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIM E REAL -->
+                <mesh filename="file:///home/dev/mogbe_ws/src/mogbe/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIMULAÇÃO E REAL -->
 
             </geometry>
             <!--<material name="blue"/>-->
