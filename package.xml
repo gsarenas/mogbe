@@ -10,6 +10,21 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
 
+  <build_depend>demo_nodes_cpp</build_depend>
+  <build_depend>demo_nodes_py</build_depend>
+  <build_depend>gazebo_ros_pkgs</build_depend>
+  <build_depend>ros2_control</build_depend>
+  <build_depend>ros2_controllers</build_depend>
+  <build_depend>gazebo_ros2_control</build_depend>
+  <build_depend>slam_toolbox</build_depend>
+  <build_depend>navigation2</build_depend>
+  <build_depend>nav2_bringup</build_depend>
+  <build_depend>twist_mux</build_depend>
+  <build_depend>xacro</build_depend>
+  <build_depend>image_transport_plugins</build_depend>
+  <build_depend>rqt_image_view</build_depend>
+  <build_depend>v4l2_camera</build_depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

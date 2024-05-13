@@ -108,6 +108,17 @@ sudo nano /etc/fstab
 sudo reboot
 ```
 
+- (Opcional) Para configurar uma câmera, supondo que será usada um módulo de câmera Raspberry Pi, instale os drivers:
+
+```bash
+sudo apt install libraspberrypi-bin v4l-utils
+```
+
+- ... setup interface cam ...
+
+ [...]
+
+
 - Siga o processo de instalação de ROS 2 (Humble Hawksbill) do [tutorial](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) da documentação oficial. Prossiga até instalar `ros-humble-ros-base` e `ros-dev-tools`. Não é necessário instalar `ros-humble-desktop`.
 
 - Para verificar a instalação, instale os pacotes de exemplo:
@@ -155,7 +166,7 @@ A área de trabalho (workspace) do projeto foi desenvolvida de modo que possa se
 
 Apesar desses pacotes serem referenciados como submódulos e o MOGBE depender deles para funcionar, a estrutura do projeto é organizada em múltiplos repositórios. O intuito dessa escolha é que, futuramente, estudantes de robótica móvel repliquem o projeto e identifiquem cada pacote como um recurso disponível. A partir disso, espera-se que derivem seus respectivos projetos de acordo com o que for necessário, não se prendendo a um repositório específico. Em projetos com ROS, é muito comum o desenvolvedor se basear em soluções já existentes e integrá-las para sua finalidade.
 
-- Crie a área de trabalho ROS (lembre-se que o procedimento é o mesmo para o Raspberry Pi e a dev machine):
+- Crie a área de trabalho ROS (lembre-se que o procedimento é o mesmo para o Raspberry Pi e a dev machine). **Caso precise usar um nome de pasta diferente de `mogbe_ws` será necessário fazer alterações nos arquivos `camera.xacro` e `lidar.xacro` da pasta `description` no pacote `mogbe`**:
 
 ```bash
 cd ~ && mkdir -p mogbe_ws/src && cd mogbe_ws/
@@ -173,13 +184,13 @@ git clone https://github.com/gsarenas/ldlidar_stl_ros2.git src/ldlidar_stl_ros2
 - Inicie `rosdep` se ainda não tiver feito:
 
 ```bash
-sudo rosdep init
+sudo rosdep init && rosdep update
 ```
 
 - Instale as dependências:
 
 ```bash
-sudo rosdep update && rosdep install --from-paths src --ignore-src -y
+sudo rosdep install --from-paths src --ignore-src -y
 ```
 
 - Em caso de falha as dependências da dev machine são:
@@ -211,8 +222,6 @@ ros-humble-nav2-bringup \
 ros-humble-twist-mux \
 ros-humble-xacro \
 ros-humble-image-transport-plugins \
-libraspberrypi-bin \
-v4l-utils \
 ros-humble-v4l2-camera
 ```
 
