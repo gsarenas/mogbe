@@ -2,13 +2,23 @@
 
 # MOGBE
 
-MOGBE - Mobile General Robot for Education: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
+**MOGBE** - **Mo**bile **G**eneral Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
+
+![mogbe_render_small](img/mogbe_render_small.png)
 
 ## Conteúdos
 
-- ...
+- [Direcionamento](#direcionamento)
+- [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine)
+- [Configuração de OS: Raspberry Pi](#configurando-de-os-raspberry-pi)
+- [Flashing de firmware: Arduino Nano](#flashing-de-firmware-arduino-nano)
+- [Configuração da área de trabalho](#configuração-da-área-de-trabalho)
+- [Execução de simulação](#execução-de-simulação)
+- [Execução do robô físico](#execução-do-robô-físico)
+- [(Opcional) Configuração de câmera](#opcional-configuração-de-câmera)
+- [Links úteis](#links-úteis)
 
-## Configuração inicial
+## Direcionamento
 
 - O MOGBE utiliza um computador portátil Raspberry Pi 3B+ em conjunto com Arduino Nano para controle efetivo da plataforma física. Um terceiro computador (dev machine) é utilizado para executar operações complexas de SLAM, Navegação Autônoma e Simulações. A seguir será detalhada a configuração inicial de cada plataforma. 
 
@@ -16,7 +26,7 @@ MOGBE - Mobile General Robot for Education: um robô autônomo para aprendizagem
 
 - Se pretende executar apenas simulações, siga os passos da seção de [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine), depois [Configuração da área de trabalho](#configuração-da-área-de-trabalho) e siga para [Executando uma simulação](#executando-uma-simulação).
 
-- **Se possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`, siga diretamente para a seção de [Execução de simulação](#execução-de-simulação) ou [Execução do robô real](#execução-do-robô-real)**.
+- Se possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`, siga diretamente para a seção de [Execução de simulação](#execução-de-simulação) ou [Execução do robô real](#execução-do-robô-real).
 
 ## Configuração de OS: Dev Machine
 
@@ -146,11 +156,32 @@ sudo nano ~/.bashrc
 
 ## Flashing de firmware: Arduino Nano
 
-[...]
+- Em seu ambiente de desenvolvimento de preferência, instale a IDE de Arduino do [site oficial](https://www.arduino.cc/en/software).
 
-### Testando o firmware de Arduino
+- Baixe o código-fonte do firmware para Arduino utilizado no MOGBE disponível em [`gsarenas/ros_arduino_bridge`](https://github.com/gsarenas/ros_arduino_bridge) e abra-o na IDE Arduino.
 
-- No Raspberry Pi, com o Arduino conectado à porta ttyUSB0:
+- Faça as alterações necessárias para combinar com seu setup. Atente-se às definições:
+  - `BAUDRATE` em `ROSArduinoBridge.ino:linha 73`.
+  - `LEFT_ENC_PIN_A` em `encoder_driver.h:linha 9`.
+  - `LEFT_ENC_PIN_B` em `encoder_driver.h:linha 10`.
+  - `RIGHT_ENC_PIN_A` em `encoder_driver.h:linha 13`.
+  - `RIGHT_ENC_PIN_B` em `encoder_driver.h:linha 14`.
+  - `RIGHT_MOTOR_BACKWARD` em `motor_driver.h:linha 6`.
+  - `LEFT_MOTOR_BACKWARD` em `motor_driver.h:linha 7`.
+  - `RIGHT_MOTOR_FORWARD` em `motor_driver.h:linha 8`.
+  - `LEFT_MOTOR_FORWARD` em `motor_driver.h:linha 9`.
+  
+- Assumindo que você irá utilizar a mesma placa de desenvolvimento Arduino que o MOGBE, configure a IDE para compilar e gravar o código na placa:
+
+  - `Ferramentas` -> `Placa` -> `Arduino AVR boards` -> `Arduino Nano`.
+  - `Processador` -> `ATmega 328P (Old Bootloader)` caso esteja utilizando uma placa "paralela" e tenha dificuldades com a configuração padrão.
+  - `Porta` -> `COMx` de acordo com sua porta conectada.
+
+- Grave o código no Arduino Nano e teste o funcionamento da interface antes de integrá-la com ambiente ROS. Recomendo seguir o procedimento de [teste do firmware de Arduino para controle dos motores](#teste-do-firmware-de-arduino-para-controle-dos-motores).
+
+### Teste do firmware de Arduino para controle dos motores
+
+- No Raspberry Pi, supondo que o Arduino esteja conectado à porta ttyUSB0:
 
 ```bash
 sudo pyserial-miniterm -e /dev/ttyUSB0 57600
@@ -158,7 +189,7 @@ sudo pyserial-miniterm -e /dev/ttyUSB0 57600
 
 - Nesse momento, é interessante testar o funcionamento do controle dos motores, bem como o funcionamento e sentido de giro dos encoders. Troque os pinos de sentido de giro dos motores e fases dos encoders se necessário. Alguns comandos importantes:
   - `e`: posição encoder de cada motor
-  - `m`: velocidade dos motores (malha fechada)
+  - `m`: velocidade dos motores (malha fechada) [enc_counts por loop]
   - `o`: velocidade dos motores (malha aberta)
   - `r`: reset valores de encoder
   - `u`: atualiza PID
@@ -240,18 +271,69 @@ ros-humble-v4l2-camera
 colcon build --symlink-install
 ```
 
-- Ignore o aviso de stderr da compilação da biblioteca `serial`. Trata-se de um aviso descontinuidade, não falha.
+- Ignore o aviso de stderr da compilação da biblioteca `serial`. Trata-se de um aviso de descontinuidade, não falha na compilação.
 
 - Com isso, a área de trabalho está configurada, compilada e pronta para execução.
 
 ## Execução de simulação
 
-- Simulações são executadas na dev machine e independem do Raspberry Pi. Para executar um exemplo, troque para a pasta
+- Simulações são executadas na dev machine e independem do Raspberry Pi. Para executar um exemplo, garanta que esteja na pasta `mogbe_ws` e que as variáveis de ambiente estejam configuradas:
 
-## Execução do robô real
-- ...
+```bash
+cd ~/mogbe_ws && source install/setup.bash
+```
 
-## (Opcional) Configurando câmera
+- Execute a simulação de teste:
+
+```bash
+ros2 launch mogbe launch_sim_all.launch.py world:=./src/mogbe/worlds/wall.world
+```
+
+- O ambiente de simulação Gazebo, a ferramenta de visualização RViz e demais `nós` devem inicializar. Para controle do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop`:
+
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
+```
+
+## Execução do robô físico
+
+### Raspberry Pi
+
+- Garanta que esteja na pasta `mogbe_ws` e que as variáveis de ambiente estejam configuradas:
+
+```bash
+cd ~/mogbe_ws && source install/setup.bash
+```
+
+- Execute os `nós` de `robot_state_publisher`, `controller_manager`, `diff_drive_controller`, `joint_state_broadcaster` e `ldlidar_stl_ros2_node`:
+
+```bash
+ros2 launch mogbe launch_robot_pi_all.launch.py
+```
+
+### Dev Machine
+
+- Após ter inicializado o MOGBE no Raspberry Pi, abra um novo terminal, garanta que esteja na pasta de trabalho `mogbe_ws` e que as variáveis de ambiente estejam configuradas:
+
+```bash
+cd ~/mogbe_ws && source install/setup.bash
+```
+
+- Execute os demais `nós`:
+
+```bash
+ros2 launch mogbe launch_robot_dev.launch.py
+```
+
+- Para controle manual do MOGBE, é necessário abrir uma nova aba de terminal e executar o `nó` de comando `teleop`:
+
+```bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
+```
+
+## (Opcional) Configuração de câmera
+
+### Raspberry Pi
 
 - Para configurar uma câmera, supondo que será usada um módulo de câmera Raspberry Pi, instale os drivers:
 
@@ -284,3 +366,29 @@ sudo nano /boot/firmware/config.txt
 ```bash
 sudo reboot
 ```
+
+- Execute o `nó` driver da câmera:
+
+```bash
+ros2 run v4l2_camera v4l2_camera_node --ros-args -p image_size:="[240,160]" -p camera_frame_id:=camera_optical_link -p brightness:="60"
+```
+
+### Dev Machine
+
+- Com o `nó` driver da câmera rodando no Raspberry Pi, visualize a imagem com:
+
+ 
+ ```bash
+ros2 run rqt_image_view rqt_image_view 
+```
+
+## Links úteis
+
+- [Documentação ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
+- [Documentação ROS 2 Control](https://control.ros.org/humble/doc/getting_started/getting_started.html)
+- [Documentação Gazebo ROS 2 Control](https://control.ros.org/humble/doc/gazebo_ros2_control/doc/index.html)
+- [Criando um pacote ROS 2](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#prerequisites)
+- [Convenções para nomear um pacote](https://ros.org/reps/rep-0144.html)
+- [Escrevendo `nós` como `publisher` e `subscriber`](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
+- [Publicando em `topics` via CLI](https://control.ros.org/humble/doc/ros2_control_demos/example_3/doc/userdoc.html)
+- [Desenvolvendo uma interface de hardware](https://control.ros.org/humble/doc/ros2_control_demos/example_7/doc/userdoc.html)
