@@ -304,7 +304,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cm
 cd ~/mogbe_ws && source install/setup.bash
 ```
 
-- Execute os `nós` de `robot_state_publisher`, `controller_manager`, `diff_drive_controller`, `joint_state_broadcaster` e `ldlidar_stl_ros2_node`:
+- Execute os `nós` de inicialização e sensor lidar:
 
 ```bash
 ros2 launch mogbe launch_robot_pi_all.launch.py
