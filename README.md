@@ -1,4 +1,4 @@
-**! EM CONSTRUÇÃO !**
+**!!! EM CONSTRUÇÃO !!!**
 
 # MOGBE
 
@@ -39,20 +39,18 @@
 - Para verificar a instalação, abra um terminal e rode o exemplo de `talker` em C++:
 
 ```bash
-source /opt/ros/humble/setup.bash
-ros2 run demo_nodes_cpp talker
+source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker
 ```
 
 - Abra um novo terminal e rode o exemplo de `listener` em Python:
 
 ```bash
-source /opt/ros/humble/setup.bash
-ros2 run demo_nodes_py listener
+source /opt/ros/humble/setup.bash && ros2 run demo_nodes_py listener
 ```
 
 - Nesse exemplo, espera-se ver o `talker` publicando suas mensagens e o `listener` reproduzindo o que foi publicado.
 
-- Para evitar a necessidade de configurar as variáveis de ambiente do diretório de instalação de ROS toda vez que for rodar um programa, edite o seu `~/.bashrc`:
+- Para evitar a necessidade de configurar as variáveis de ambiente do diretório de instalação de ROS com o comando `source` toda vez que for rodar um programa, edite o seu arquivo `~/.bashrc`:
 
 ```bash
 sudo nano ~/.bashrc
@@ -133,15 +131,13 @@ sudo apt install ros-humble-demo-nodes-cpp ros-humble-demo-nodes-py
 - Abra um novo terminal e rode o exemplo de `talker` em C++:
 
 ```bash
-source /opt/ros/humble/setup.bash
-ros2 run demo_nodes_cpp talker
+source /opt/ros/humble/setup.bash && ros2 run demo_nodes_cpp talker
 ```
 
 - Abra um novo terminal e rode o exemplo de `listener` em Python:
 
 ```bash
-source /opt/ros/humble/setup.bash
-ros2 run demo_nodes_py listener
+source /opt/ros/humble/setup.bash && ros2 run demo_nodes_py listener
 ```
 
 - Nesse exemplo, espera-se ver o `talker` publicando suas mensagens e o `listener` reproduzindo o que foi publicado.
@@ -208,7 +204,7 @@ Apesar desses pacotes serem referenciados como submódulos e o MOGBE depender de
 - Crie a área de trabalho ROS (lembre-se que o procedimento é o mesmo para o Raspberry Pi e a dev machine). **Caso precise usar um nome de pasta diferente de `mogbe_ws` será necessário fazer alterações nos arquivos `camera.xacro` e `lidar.xacro` da pasta `description` no pacote `mogbe`**:
 
 ```bash
-cd ~ && mkdir -p mogbe_ws/src && cd mogbe_ws/
+mkdir -p ~/mogbe_ws/src && cd ~/mogbe_ws/
 ```
 
 - Clone os repositórios:
