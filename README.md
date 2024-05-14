@@ -4,7 +4,8 @@
 
 **MOGBE** - **Mo**bile **G**eneral Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
 
-![mogbe_render_small](img/mogbe_render_small.png)
+<img src="img/mogbe_render_small.png" width="238" height="250"> 
+<img src="img/demo_tcc_small.gif" width="430" height="287">
 
 ## Conteúdos
 
