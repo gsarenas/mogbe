@@ -328,7 +328,7 @@ colcon build --symlink-install
 
 - Com isso, a área de trabalho está configurada, compilada e pronta para execução. Se você seguiu todos os passos de maneira correta, é esperado a seguinte estrutura para a pasta:
 
-### Estrutura top-level esperada
+#### Estrutura top-level esperada em `~/mogbe_ws`
 
     .
     ├── build
