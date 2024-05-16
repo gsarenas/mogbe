@@ -13,12 +13,13 @@
 
 - [Direcionamento](#direcionamento)
 - [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine)
-- [Configuração de OS: Raspberry Pi](#configurando-de-os-raspberry-pi)
+- [Configuração de OS: Raspberry Pi](#configuração-de-os-raspberry-pi)
 - [Flashing de firmware: Arduino Nano](#flashing-de-firmware-arduino-nano)
 - [Configuração da área de trabalho](#configuração-da-área-de-trabalho)
 - [Execução de simulação](#execução-de-simulação)
 - [Execução do robô físico](#execução-do-robô-físico)
 - [(Opcional) Configuração de câmera](#opcional-configuração-de-câmera)
+- [Comandos adicionais](#comandos-adicionais)
 - [Links úteis](#links-úteis)
 
 ## Direcionamento
@@ -62,7 +63,7 @@ sudo nano ~/.bashrc
 
 - Adicione `source /opt/ros/humble/setup.bash`à última linha do arquivo, feche `Ctrl+X`, salve `Y` e confirme `Enter`.
 
-## Configurando de OS: Raspberry Pi
+## Configuração de OS: Raspberry Pi
 
 - Certifique-se de que esteja rodando Ubuntu Server versão Jammy Jellyfish 22.04.4 LTS. O sistema do Raspberry Pi será rodado no modo headless, ou seja, sem vídeo. É recomendado utilizar o `Raspberry Pi Imager` para fazer a instalação do sistema operacional: 
   - Selecione o modelo do dispositivo.
@@ -170,6 +171,10 @@ sudo nano ~/.bashrc
   - `LEFT_MOTOR_BACKWARD` em `motor_driver.h:linha 7`.
   - `RIGHT_MOTOR_FORWARD` em `motor_driver.h:linha 8`.
   - `LEFT_MOTOR_FORWARD` em `motor_driver.h:linha 9`.
+
+> [!NOTE]
+> Garanta que a programação corresponda às conexões físicas. [Referência](https://github.com/gsarenas/mogbe/blob/mogbe-light/img/mogbe_esquematico.png):
+> ![mogbe_esquemático](img/mogbe_esquematico.png)
   
 - Assumindo que você irá utilizar a mesma placa de desenvolvimento Arduino que o MOGBE, configure a IDE para compilar e gravar o código na placa:
 
@@ -208,14 +213,21 @@ Apesar desses pacotes serem referenciados como submódulos e o MOGBE depender de
 - Crie a área de trabalho ROS (lembre-se que o procedimento é o mesmo para o Raspberry Pi e a dev machine). 
 
 > [!IMPORTANT]
-> Caso precise usar um nome de pasta diferente de `mogbe_ws` será necessário fazer alterações nos arquivos `camera.xacro` e `lidar.xacro` da pasta `description` no pacote `mogbe`:
+> Caso precise usar um nome de pasta diferente de `mogbe_ws` será necessário fazer alterações nos arquivos `camera.xacro` e `lidar.xacro` da pasta `description` do pacote `mogbe`:
 
 ```bash
 mkdir -p ~/mogbe_ws/src && cd ~/mogbe_ws/
 ```
 
 > [!IMPORTANT]
-> O repositório principal possui `worlds` mais elaborados para a simulação, o que o torna mais pesado (~130 MB). Caso você deseje utilizá-los, clone o repositório normalmente:
+> O `main` branch do repositório possui `worlds` mais elaborados para a simulação (vide tabela abaixo), o que torna o repositório mais pesado (~130 MB). 
+
+| [`hospital.world`](https://github.com/gsarenas/aws-robomaker-hospital-world)  | [`small_warehouse.world`](https://github.com/gsarenas/aws-robomaker-small-warehouse-world) |
+| :-----------: | :-----------: |
+| ![hospital.world](img/hospital_small.png) | ![small_warehouse.world](img/warehouse_small.png) |
+
+
+- Caso deseje utilizá-los, clone o repositório normalmente:
 
 ```bash
 git clone https://github.com/gsarenas/mogbe.git src/mogbe
@@ -299,13 +311,13 @@ colcon build --symlink-install
 cd ~/mogbe_ws && source install/setup.bash
 ```
 
-- Execute a simulação de teste:
+- Execute a simulação de teste no ambiente `wall.world`:
 
 ```bash
 ros2 launch mogbe launch_sim_all.launch.py world:=./src/mogbe/worlds/wall.world
 ```
 
-- O ambiente de simulação Gazebo, a ferramenta de visualização RViz e demais `nós` devem inicializar. Para controle do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop`:
+- O ambiente de simulação Gazebo, a ferramenta de visualização RViz e demais `nós` devem inicializar. Para controle manual do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop_twist_keyboard`:
 
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
@@ -321,7 +333,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cm
 cd ~/mogbe_ws && source install/setup.bash
 ```
 
-- Execute os `nós` de inicialização e sensor lidar:
+- Inicie o robô e sensor lidar:
 
 ```bash
 ros2 launch mogbe launch_robot_pi_all.launch.py
@@ -397,6 +409,43 @@ ros2 run v4l2_camera v4l2_camera_node --ros-args -p image_size:="[240,160]" -p c
  ```bash
 ros2 run rqt_image_view rqt_image_view 
 ```
+
+## Comandos adicionais
+
+Aqui temos uma "cola rápida" dos comandos que estão por trás do arquivos `.launch.py` caso necessite inicializar os processos de maneira separada. Há também alguns comandos adicionais de ferramentas e recursos (ROS e terceiros) que permitem melhor entendimento e/ou visualização do funcionamento do MOGBE. Caso queira explorá-los, reserve um tempo para estudá-los com calma, pois alguns possuem sequência e dependem de outros processos para funcionarem.
+
+> [!TIP]
+> Entenda valores entre `<` `>` como o tipo de dado esperado para os parâmetros. Exemplo: `use_sim_time:=<bool>` &#8594; `use_sim_time:=true` | `use_sim_time:=false`.
+
+| Descrição | Ambiente | Comando|
+| :-------: | :------: | :----: | 
+| Robô (real) | Pi | `ros2 launch mogbe launch_robot.launch.py` |
+| LiDAR | Pi | `ros2 launch ldlidar_stl_ros2 ld19.launch.py` |
+| Robô (sim) + controlador + mundo + posição | Dev | `ros2 launch mogbe launch_sim.launch.py use_ros2_control:=<bool> world:=./src/mogbe/worlds/<world_name.world> x:=<float> y:=<float> z:=<float>` |
+| teleop_twist_keyboard | Dev/Pi | `ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=</cmd_vel_joy` |
+| twist_mux | Dev/Pi | `ros2 run twist_mux twist_mux --ros-args --params-file ./src/mogbe/config/twist_mux.yaml -r cmd_vel_out:=diff_cont/cmd_vel_unstamped` |
+| slam_toolbox (mapping) | Dev | `ros2 launch mogbe online_async_launch.py use_sim_time:=<bool>` |
+| slam_toolbox (localization) | Dev | `ros2 launch mogbe localization_launch.py use_sim_time:=<bool>` |
+| Navigation2 | Dev | `ros2 launch mogbe navigation_launch.py use_sim_time:=<bool>` |
+| gazebo_ros + mundo específico| Dev | `ros2 launch gazebo_ros gazebo.launch.py extra_gazebo_args:="--ros-args --params-file ./src/mogbe/config/gazebo_params.yaml" world:=</path/world_name.world>` |
+| robot_state_publisher | Dev/Pi | `ros2 launch mogbe rsp.launch.py use_sim_time:=<bool> use_ros2_control:=<bool>` |
+| gazebo_ros + spawn_entity + posição | Dev | `ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity <robot_name> -x <float> -y <float> -z <float>` |
+| Carrega e ativa diff_drive_controller/DiffDriveController | Dev/Pi | `ros2 run controller_manager spawner diff_cont` |
+| Carrega e ativa joint_state_broadcaster/JointStateBroadcaster | Dev/Pi | `ros2 run controller_manager spawner joint_broad`
+| Publica mensagem cmd_vel | Dev/Pi | `ros2 topic pub /diff_cont/cmd_vel_unstamped geometry_msgs/msg/Twist '{linear: {x: <float>, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: <float>}}' --rate 30` |
+| Verifica msg LiDAR | Dev/Pi | `ros2 topic echo /scan` |
+| Verifica estado das juntas | Dev/Pi | `ros2 topic echo /joint_states` |
+| Lista interfaces de hardware | Dev/Pi | `ros2 control list_hardware_interfaces` |
+| Lista componentes de hardware | Dev/Pi | `ros2 control list_hardware_components` |
+| Lista controladores | Dev/Pi | `ros2 control list_controllers` |
+| RQt | Dev | `rqt` |
+| rqt_graph | Dev | `ros2 run rqt_graph rqt_graph` |
+| tf2 árvore hierárquica (PDF) | Dev | `ros2 run tf2_tools view_frames` |
+| tf2 transformada entre dois frames | Dev/Pi | `ros2 run tf2_tools tf2_echo <frame_1> <frame_2>` |
+| RViz + config específica| Dev | `rviz2` |
+| Gazebo + mundo específico | Dev | `gazebo </path/world_name.world>` |
+| PlotJuggler (instalação) | Dev | `sudo snap install plotjuggler` |
+| PlotJuggler (gráficos em tempo real) | Dev | `plotjuggler` |
 
 ## Links úteis
 
