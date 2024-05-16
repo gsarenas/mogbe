@@ -4,8 +4,12 @@
 
 **MOGBE** - **Mo**bile **G**eneral Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
 
+> O MOGBE é fruto de um Trabalho de Conclusão de Curso (TCC) desenvolvido por alunos do curso de Engenharia de Controle e Automação da Faculdade Engenheiro Salvador Arena (FESA).
+> A plataforma foi desenvolvida com o intuito de ser integrada às aulas de Robótica e Tópicos Especiais de Engenharia para promover um melhor entendimento de conceitos teóricos de robótica móvel com implementações práticas em ambiente simulado e real.
+> Apesar de sua proposta primária de ser integrada às aulas da FESA, o código-fonte da plataforma está disponível ao público geral pois ela foi desenvolvida a fim de permitir que entusiastas com conhecimentos em eletrônica e programação possam utilizá-la para aprofundar seus conhecimentos em robótica móvel ou até construírem sua própria solução.
+
 <p float="left">
-  <img src="img/mogbe_render_small.png" width="200" />
+  <img src="img/mogbe_render_small.png" width="227" height="240" />
   <img src="img/demo_tcc_small.gif" width="363" /> 
 </p>
 
@@ -24,15 +28,36 @@
 
 ## Direcionamento
 
-- O MOGBE utiliza um computador portátil Raspberry Pi 3B+ em conjunto com Arduino Nano para controle efetivo da plataforma física. Um terceiro computador (dev machine) é utilizado para executar operações complexas de SLAM, Navegação Autônoma e Simulações. A seguir será detalhada a configuração inicial de cada plataforma. 
+O MOGBE utiliza um computador portátil Raspberry Pi 3B+ em conjunto com Arduino Nano para controle da plataforma física. Um computador externo (dev machine) é utilizado para executar operações complexas de SLAM, navegação autônoma e simulações. Preparei uma trilha para seguir e facilitar a configuração de acordo com sua necessidade:
 
-- Caso já tenha instalado o OS Ubuntu 22.04, ROS 2 Humble Hawksbill e configurado o Arduino Nano, siga para a seção de [Configuração da área de trabalho](#configuração-da-área-de-trabalho).
+1. Você só vai rodar simulações e possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`:
+    - [Execução de simulação](#execução-de-simulação)
 
-- Se pretende executar apenas simulações, siga os passos da seção de [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine), depois [Configuração da área de trabalho](#configuração-da-área-de-trabalho) e siga para [Executando uma simulação](#executando-uma-simulação).
+2. Você só vai rodar simulações e não possui uma máquina configurada com Ubuntu 22.04 e ROS 2:
+    - [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine)
+    - [Configuração da área de trabalho](#configuração-da-área-de-trabalho)
+    - [Execução de simulação](#execução-de-simulação)
 
-- Se possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`, siga diretamente para a seção de [Execução de simulação](#execução-de-simulação) ou [Execução do robô real](#execução-do-robô-real).
+3. Você vai rodar o robô real e simulações e possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`:
+    - [Configuração de OS: Raspberry Pi](#configuração-de-os-raspberry-pi)
+    - [Flashing de firmware: Arduino Nano](#flashing-de-firmware-arduino-nano)
+    - [Configuração da área de trabalho](#configuração-da-área-de-trabalho) (Raspberry Pi)
+    - [Execução de simulação](#execução-de-simulação)
+    - [Execução do robô físico](#execução-do-robô-físico)
+
+4. Você vai rodar o robô real e simulações, não possui uma máquina com ambiente Ubuntu 22.04 e ROS 2:
+    - [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine)
+    - [Configuração de OS: Raspberry Pi](#configuração-de-os-raspberry-pi)
+    - [Flashing de firmware: Arduino Nano](#flashing-de-firmware-arduino-nano)
+    - [Configuração da área de trabalho](#configuração-da-área-de-trabalho) (Raspberry Pi)
+    - [Execução de simulação](#execução-de-simulação)
+    - [Execução do robô físico](#execução-do-robô-físico)
+
 
 ## Configuração de OS: Dev Machine
+
+> [!NOTE]
+> O projeto foi desenvolvido e implementado utilizando uma máquina virtual (guest machine) rodando Ubuntu 64-bit através do VMware Workstation 17 Player em um host machine Windows.
 
 - Certifique-se de que esteja rodando [Ubuntu Desktop versão Jammy Jellyfish 22.04.4 LTS](https://releases.ubuntu.com/jammy/).
 
@@ -172,8 +197,8 @@ sudo nano ~/.bashrc
   - `RIGHT_MOTOR_FORWARD` em `motor_driver.h:linha 8`.
   - `LEFT_MOTOR_FORWARD` em `motor_driver.h:linha 9`.
 
-> [!NOTE]
-> Garanta que a programação corresponda às conexões físicas. [Referência](https://github.com/gsarenas/mogbe/blob/mogbe-light/img/mogbe_esquematico.png):
+> [!IMPORTANT]
+> Garanta que a programação corresponda às conexões físicas. [Referência](https://github.com/gsarenas/mogbe/blob/main/img/mogbe_esquematico.png):
 > ![mogbe_esquemático](img/mogbe_esquematico.png)
   
 - Assumindo que você irá utilizar a mesma placa de desenvolvimento Arduino que o MOGBE, configure a IDE para compilar e gravar o código na placa:
@@ -234,7 +259,7 @@ git clone https://github.com/gsarenas/mogbe.git src/mogbe
 ```
 
 > [!IMPORTANT]
-> Caso não necessite dessas simulações - ou esteja criando a àrea de trabalho do Raspberry Pi - e prefira um repositório mais leve (~20 MB), clone a branch `mogbe-light`:
+> Caso não necessite dessas simulações - ou esteja criando a área de trabalho do Raspberry Pi - e prefira um repositório mais leve (~20 MB), clone a branch `mogbe-light`:
 
 ```bash
 git clone --single-branch -b mogbe-light https://github.com/gsarenas/mogbe.git src/mogbe
@@ -301,7 +326,21 @@ colcon build --symlink-install
 
 - Ignore o aviso de stderr da compilação da biblioteca `serial`. Trata-se de um aviso de descontinuidade, não falha na compilação.
 
-- Com isso, a área de trabalho está configurada, compilada e pronta para execução.
+- Com isso, a área de trabalho está configurada, compilada e pronta para execução. Se você seguiu todos os passos de maneira correta, é esperado a seguinte estrutura para a pasta:
+
+### Estrutura top-level esperada
+
+    .
+    ├── build
+    ├── install
+    ├── log
+    └── src
+        ├── diffdrive_arduino
+        ├── ldlidar_stl_ros2
+        ├── mogbe
+        └── serial
+
+> O conteúdo das pastas `build`, `install` e `log` não é relevante no momento. Basta verificar que elas foram criadas após a `build`.
 
 ## Execução de simulação
 
@@ -317,11 +356,18 @@ cd ~/mogbe_ws && source install/setup.bash
 ros2 launch mogbe launch_sim_all.launch.py world:=./src/mogbe/worlds/wall.world
 ```
 
-- O ambiente de simulação Gazebo, a ferramenta de visualização RViz e demais `nós` devem inicializar. Para controle manual do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop_twist_keyboard`:
+- O ambiente de simulação Gazebo, a ferramenta de visualização RViz e demais `nós` devem inicializar. Lembre-se que o Gazebo é o simulador 3D, enquanto o RViz como o robô "enxerga" o mundo com as informações limitadas que tem.
+
+![gazebo_rviz_sim_small](img/gazebo_rviz_sim_small.png)
+
+- Para controle manual do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop_twist_keyboard`:
 
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
 ```
+
+> [!TIP]
+> É necessário que o terminal com o `teleop_twist_keyboard` esteja em foco para controlar o robô manualmente.
 
 ## Execução do robô físico
 
@@ -347,7 +393,7 @@ ros2 launch mogbe launch_robot_pi_all.launch.py
 cd ~/mogbe_ws && source install/setup.bash
 ```
 
-- Execute os demais `nós`:
+- Execute os `nós` de SLAM, navegação autônoma e visualização:
 
 ```bash
 ros2 launch mogbe launch_robot_dev.launch.py
@@ -358,6 +404,9 @@ ros2 launch mogbe launch_robot_dev.launch.py
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
 ```
+
+> [!TIP]
+> É necessário que o terminal com o `teleop_twist_keyboard` esteja em foco para controlar o robô manualmente.
 
 ## (Opcional) Configuração de câmera
 
