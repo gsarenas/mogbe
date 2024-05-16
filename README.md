@@ -210,10 +210,23 @@ Apesar desses pacotes serem referenciados como submódulos e o MOGBE depender de
 mkdir -p ~/mogbe_ws/src && cd ~/mogbe_ws/
 ```
 
-- Clone os repositórios:
+[!IMPORTANT]
+O repositório principal possui `worlds` mais elaborados para a simulação, o que o torna mais pesado (~130 MB). Caso você deseje utilizá-los, clone o repositório normalmente:
 
 ```bash
-git clone https://github.com/gsarenas/mogbe.git src/mogbe && \
+git clone https://github.com/gsarenas/mogbe.git src/mogbe
+```
+
+[!IMPORTANT]
+Caso não necessite dessas simulações - ou esteja criando a àrea de trabalho do Raspberry Pi - e prefira um repositório mais leve (~20 MB), clone a branch `mogbe-light`:
+
+```bash
+git clone --single-branch -b mogbe-light https://github.com/gsarenas/mogbe.git src/mogbe
+```
+
+- Clone os submódulos:
+
+```bash
 git clone https://github.com/gsarenas/serial.git src/serial && \
 git clone https://github.com/gsarenas/diffdrive_arduino.git src/diffdrive_arduino && \
 git clone https://github.com/gsarenas/ldlidar_stl_ros2.git src/ldlidar_stl_ros2
