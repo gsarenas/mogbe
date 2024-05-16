@@ -1,16 +1,23 @@
 import os
+from os.path import join
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction, ExecuteProcess
+from launch.actions import DeclareLaunchArgument,IncludeLaunchDescription, TimerAction, ExecuteProcess, SetEnvironmentVariable, AppendEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
 
     package_name='mogbe'
+
+    # Declare launch arguments for x, y, z positions
+    declare_x_position = DeclareLaunchArgument('x', default_value='0.0', description='Initial x position')
+    declare_y_position = DeclareLaunchArgument('y', default_value='0.0', description='Initial y position')
+    declare_z_position = DeclareLaunchArgument('z', default_value='0.5', description='Initial z position')
 
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -37,7 +44,10 @@ def generate_launch_description():
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'bot_one'],
+                                   '-entity', 'mogbe_one',
+                                   '-x', LaunchConfiguration('x'),
+                                   '-y', LaunchConfiguration('y'),
+                                   '-z', LaunchConfiguration('z')],
                         output='screen')
     
     diff_drive_spawner = Node(
@@ -76,6 +86,14 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        AppendEnvironmentVariable(
+        name='GAZEBO_MODEL_PATH',
+        value=join(get_package_share_directory(package_name), "models")),
+        
+        declare_x_position,
+        declare_y_position,
+        declare_z_position,
+
         rviz_node,
         rsp,
         twist_mux,

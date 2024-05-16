@@ -1,13 +1,22 @@
 import os
+from os.path import join
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.actions import SetEnvironmentVariable
+from launch.actions import AppendEnvironmentVariable
 
 def generate_launch_description():
 
     package_name='mogbe'
+
+    # Declare launch arguments for x, y, z positions
+    declare_x_position = DeclareLaunchArgument('x', default_value='0.0', description='Initial x position')
+    declare_y_position = DeclareLaunchArgument('y', default_value='0.0', description='Initial y position')
+    declare_z_position = DeclareLaunchArgument('z', default_value='0.5', description='Initial z position')
 
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -25,7 +34,10 @@ def generate_launch_description():
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'bot_one'],
+                                   '-entity', 'mogbe_one',
+                                   '-x', LaunchConfiguration('x'),
+                                   '-y', LaunchConfiguration('y'),
+                                   '-z', LaunchConfiguration('z')],
                         output='screen')
     
     diff_drive_spawner = Node(
@@ -41,6 +53,14 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        AppendEnvironmentVariable(
+        name='GAZEBO_MODEL_PATH',
+        value=join(get_package_share_directory(package_name), "models")),
+        
+        declare_x_position,
+        declare_y_position,
+        declare_z_position,
+
         rsp,
         gazebo,
         spawn_entity,

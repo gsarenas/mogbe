@@ -23,7 +23,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS scripts/mogbe_new_goal.py scripts/mogbe_move.py DESTINATION lib/${PROJECT_NAME})
 
 install(
-  DIRECTORY config description img launch meshes worlds 
+  DIRECTORY config description img launch meshes models worlds 
   DESTINATION share/${PROJECT_NAME}
 )
 
