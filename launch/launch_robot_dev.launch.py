@@ -27,7 +27,7 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
 
-    nav2_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'nav2_params.yaml')
+    nav2_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'nav2_params_real.yaml')
 
     navigation = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -48,7 +48,6 @@ def generate_launch_description():
     delayed_rviz = TimerAction(period=10.0, actions=[rviz_node])
 
     return LaunchDescription([
-        rviz_node,
         twist_mux,
         slam_toolbox,
         delayed_navigation,
