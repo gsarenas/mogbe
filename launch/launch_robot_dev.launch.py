@@ -35,16 +35,22 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false', 'params_file': nav2_params_file}.items()
     )
 
-    delayed_navigation = TimerAction(period=10.0, actions=[navigation])
+    delayed_navigation = TimerAction(period=8.0, actions=[navigation])
 
-    rviz_node = ExecuteProcess(
-        cmd=['rviz2'],
-        output='screen'
+    rviz_config_file = os.path.join(get_package_share_directory(package_name), 'config', 'view_mogbe_real.rviz')
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', rviz_config_file]
     )
+
+    delayed_rviz = TimerAction(period=10.0, actions=[rviz_node])
 
     return LaunchDescription([
         rviz_node,
         twist_mux,
         slam_toolbox,
-        delayed_navigation
+        delayed_navigation,
+        delayed_rviz,
     ])

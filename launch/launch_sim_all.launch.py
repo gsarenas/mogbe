@@ -2,9 +2,8 @@ import os
 from os.path import join
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument,IncludeLaunchDescription, TimerAction, ExecuteProcess, SetEnvironmentVariable, AppendEnvironmentVariable
+from launch.actions import DeclareLaunchArgument,IncludeLaunchDescription, TimerAction, AppendEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
@@ -28,8 +27,8 @@ def generate_launch_description():
     twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
 
     twist_mux = Node(
-            package="twist_mux",
-            executable="twist_mux",
+            package='twist_mux',
+            executable='twist_mux',
             parameters=[twist_mux_params, {'use_sim_time': True}],
             remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
         )
@@ -51,15 +50,15 @@ def generate_launch_description():
                         output='screen')
     
     diff_drive_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["diff_cont"],
+        package='controller_manager',
+        executable='spawner',
+        arguments=['diff_cont'],
     )
 
     joint_broad_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_broad"],
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_broad'],
     )
 
     slam_toolbox_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'mapper_params_online.async.yaml')
@@ -78,23 +77,27 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'true', 'params_file': nav2_params_file}.items()
     )
 
-    delayed_navigation = TimerAction(period=10.0, actions=[navigation])
+    delayed_navigation = TimerAction(period=8.0, actions=[navigation])
 
-    rviz_node = ExecuteProcess(
-        cmd=['rviz2'],
-        output='screen'
+    rviz_config_file = os.path.join(get_package_share_directory(package_name), 'config', 'view_mogbe_sim.rviz')
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', rviz_config_file]
     )
+
+    delayed_rviz = TimerAction(period=10.0, actions=[rviz_node])
 
     return LaunchDescription([
         AppendEnvironmentVariable(
         name='GAZEBO_MODEL_PATH',
-        value=join(get_package_share_directory(package_name), "models")),
+        value=join(get_package_share_directory(package_name), 'models')),
         
         declare_x_position,
         declare_y_position,
         declare_z_position,
 
-        rviz_node,
         rsp,
         twist_mux,
         gazebo,
@@ -102,5 +105,6 @@ def generate_launch_description():
         diff_drive_spawner,
         joint_broad_spawner,
         slam_toolbox,
-        delayed_navigation
+        delayed_navigation,
+        delayed_rviz,
     ])
