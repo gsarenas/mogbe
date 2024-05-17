@@ -273,6 +273,7 @@ git clone https://github.com/gsarenas/diffdrive_arduino.git src/diffdrive_arduin
 git clone https://github.com/gsarenas/ldlidar_stl_ros2.git src/ldlidar_stl_ros2
 ```
 
+<!--
 - Inicie `rosdep` se ainda não tiver feito:
 
 ```bash
@@ -287,6 +288,9 @@ rosdep update && rosdep install --from-paths src --ignore-src -y --os=ubuntu:$ar
 ```
 
 - `rosdep` deve ser suficiente para instalar os pacotes necessários. Ignore qualquer erro relacionado a pacotes não listados para a arquitetura `x86_64` ou `amd64`. Se houver qualquer outro erro, as dependências da dev machine se resolvem com:
+-->
+
+- Instale as dependências da dev machine (somente dev machine):
 
 ```bash
 sudo apt install ros-humble-gazebo-ros-pkgs \
@@ -302,7 +306,11 @@ ros-humble-image-transport-plugins \
 ros-humble-rqt-image-view
 ```
 
+<!--
 - No caso do Raspberry Pi, ignore qualquer erro relacionado a pacotes não listados para a arquitetura `aarch64` ou `arm64`. Caso tenha algum outro erro, as dependências do Raspberry Pi se resolvem com:
+-->
+
+- Instale as dependências do Raspberry Pi (somente Raspberry Pi):
 
 ```bash
 sudo apt install ros-humble-demo-nodes-cpp \
