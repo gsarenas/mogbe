@@ -23,7 +23,7 @@ def generate_launch_description():
 
     slam_toolbox = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(package_name),'launch','online_async_launch.py'
+                    get_package_share_directory(package_name),'launch','online_async.launch.py'
                 )]), launch_arguments={'use_sim_time': 'false'}.items()
     )
 
@@ -31,7 +31,7 @@ def generate_launch_description():
 
     navigation = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory(package_name),'launch','navigation_launch.py'
+                    get_package_share_directory(package_name),'launch','navigation.launch.py'
                 )]), launch_arguments={'use_sim_time': 'false', 'params_file': nav2_params_file}.items()
     )
 
