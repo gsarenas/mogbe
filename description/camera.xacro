@@ -10,9 +10,12 @@
     <link name="pi_frame">
         <visual>
             <geometry>
-                <!--<mesh filename="package://mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> SÓ FUNCIONA COM RVIZ -->
-                <!--<mesh filename="file://$(find mogbe)/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> FUNCIONA COM GAZEBO E RVIZ SOMENTE EM SIMULAÇÃO -->
-                <mesh filename="file:///home/dev/mogbe_ws/src/mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIM E REAL -->
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find mogbe)/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/>
+                </xacro:if>
+                <xacro:unless value="$(arg sim_mode)">
+                    <mesh filename="package://mogbe/meshes/RasPi-Camera-v1.obj" scale="0.001 0.001 0.001"/>
+                </xacro:unless>
             </geometry>
         </visual>
     </link>
