@@ -60,7 +60,7 @@ def generate_launch_description():
         arguments=['joint_broad'],
     )
 
-    slam_toolbox_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'mapper_params_online.async.yaml')
+    slam_toolbox_params_file = os.path.join(get_package_share_directory(package_name), 'config', 'mapper_params_online_async.yaml')
 
     slam_toolbox = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(

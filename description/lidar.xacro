@@ -10,13 +10,13 @@
     <link name="LD19_frame">
         <visual>
             <geometry>
-                <!--<cylinder radius="0.05" length="0.04"/>-->
-                <!--<mesh filename="file://$(find mogbe)/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> SÓ FUNCIONA COM RVIZ -->
-                <!-- <mesh filename="file://$(find mogbe)/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> FUNCIONA COM GAZEBO E RVIZ SOMENTE EM SIMULAÇÃO -->
-                <mesh filename="file:///home/dev/mogbe_ws/src/mogbe/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/> <!-- FUNCIONA GAZEBO E RVIZ, SIMULAÇÃO E REAL -->
-
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find mogbe)/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/>
+                </xacro:if>
+                <xacro:unless value="$(arg sim_mode)">
+                    <mesh filename="package://mogbe/meshes/LD19-v1.obj" scale="0.001 0.001 0.001"/>
+                </xacro:unless>
             </geometry>
-            <!--<material name="blue"/>-->
         </visual>
         <collision>
             <geometry>
@@ -36,8 +36,6 @@
 
     <link name="laser_frame">
     </link>
-
-
 
     <gazebo reference="laser_frame">
         <material>Gazebo/Blue</material>
@@ -60,7 +58,7 @@
             </ray>
             <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
-                    <argument>~/out:=scan</argument>
+                    <remapping>~/out:=scan</remapping>
                 </ros>
                 <output_type>sensor_msgs/LaserScan</output_type>
                 <frame_name>laser_frame</frame_name>
