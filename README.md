@@ -165,8 +165,8 @@ Aqui temos uma "cola rápida" dos comandos que estão por trás do arquivos `.la
 | Robô (real) | Pi | `ros2 launch mogbe mogbe_robot_pi.launch.py` |
 | LiDAR | Pi | `ros2 launch ldlidar_stl_ros2 ld19.launch.py` |
 | Robô (sim) + controlador + mundo + posição | Dev | `ros2 launch mogbe mogbe_simulation.launch.py use_ros2_control:=<bool> world:=./src/mogbe/worlds/<world_name.world> x:=<float> y:=<float> z:=<float>` |
-| teleop_twist_keyboard | Dev/Pi | `ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=</cmd_vel_joy>` |
-| twist_mux | Dev/Pi | `ros2 run twist_mux twist_mux --ros-args --params-file ./src/mogbe/config/twist_mux.yaml -r cmd_vel_out:=diff_cont/cmd_vel_unstamped` |
+| teleop_twist_keyboard | Dev/Pi | `ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/cmd_vel_joy` |
+| twist_mux | Dev/Pi | `ros2 run twist_mux twist_mux --ros-args --params-file ./src/mogbe/config/twist_mux.yaml --remap /cmd_vel_out:=/diff_cont/cmd_vel_unstamped` |
 | slam_toolbox (mapping) | Dev | `ros2 launch mogbe online_async.launch.py use_sim_time:=<bool>` |
 | slam_toolbox (localization) | Dev | `ros2 launch mogbe localization.launch.py use_sim_time:=<bool>` |
 | Navigation2 | Dev | `ros2 launch mogbe navigation.launch.py use_sim_time:=<bool>` |
