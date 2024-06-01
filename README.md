@@ -2,7 +2,12 @@
 
 # MOGBE
 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Documentation Status](https://readthedocs.org/projects/mogbe/badge/?version=latest)](https://mogbe.readthedocs.io/pt/latest/?badge=latest)
+
 **MOGBE** - **Mo**bile **G**eneral Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
+
+Confira a [documentação oficial do MOGBE](https://mogbe.readthedocs.io).
 
 > O MOGBE é fruto de um Trabalho de Conclusão de Curso (TCC) desenvolvido por alunos do curso de Engenharia de Controle e Automação da Faculdade Engenheiro Salvador Arena (FESA).
 > A plataforma foi desenvolvida com o intuito de ser integrada às aulas de Robótica e Tópicos Especiais de Engenharia para promover um melhor entendimento de conceitos teóricos de robótica móvel com implementações práticas em ambiente simulado e real.
@@ -108,7 +113,7 @@ ros2 launch mogbe mogbe_simulation_all.launch.py world:=./src/mogbe/worlds/wall.
 - Para controle manual do robô na simulação, abra um novo terminal e rode o `nó` de comando `teleop_twist_keyboard`:
 
 ```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/cmd_vel_joy
 ```
 
 > [!TIP]
@@ -147,7 +152,7 @@ ros2 launch mogbe mogbe_robot_dev.launch.py
 - Para controle manual do MOGBE, é necessário abrir uma nova aba de terminal e executar o `nó` de comando `teleop`:
 
 ```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/cmd_vel_joy
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/cmd_vel_joy
 ```
 
 > [!TIP]
@@ -189,14 +194,3 @@ Aqui temos uma "cola rápida" dos comandos que estão por trás do arquivos `.la
 | Gazebo + mundo específico | Dev | `gazebo </path/to/world_name.world>` |
 | PlotJuggler (instalação) | Dev | `sudo snap install plotjuggler` |
 | PlotJuggler (gráficos em tempo real) | Dev | `plotjuggler` |
-
-## Links úteis
-
-- [Documentação ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
-- [Documentação ROS 2 Control](https://control.ros.org/humble/doc/getting_started/getting_started.html)
-- [Documentação Gazebo ROS 2 Control](https://control.ros.org/humble/doc/gazebo_ros2_control/doc/index.html)
-- [Criando um pacote ROS 2](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html#prerequisites)
-- [Convenções para nomear um pacote](https://ros.org/reps/rep-0144.html)
-- [Escrevendo `nós` como `publisher` e `subscriber`](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
-- [Publicando em `topics` via CLI](https://control.ros.org/humble/doc/ros2_control_demos/example_3/doc/userdoc.html)
-- [Desenvolvendo uma interface de hardware](https://control.ros.org/humble/doc/ros2_control_demos/example_7/doc/userdoc.html)
