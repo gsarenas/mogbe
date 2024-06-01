@@ -21,15 +21,10 @@ Confira a [documentação oficial do MOGBE](https://mogbe.readthedocs.io).
 ## Conteúdos
 
 - [Direcionamento](#direcionamento)
-- [Configuração de OS: Dev Machine](#configuração-de-os-dev-machine)
-- [Configuração de OS: Raspberry Pi](#configuração-de-os-raspberry-pi)
-- [Flashing de firmware: Arduino Nano](#flashing-de-firmware-arduino-nano)
-- [Configuração da área de trabalho](#configuração-da-área-de-trabalho)
-- [Execução de simulação](#execução-de-simulação)
-- [Execução do robô físico](#execução-do-robô-físico)
-- [(Opcional) Configuração de câmera](#opcional-configuração-de-câmera)
+- [Configuração da área de trabalho](#criando-uma-área-de-trabalho-para-o-mogbe)
+- [Execução de simulação](#exemplo-de-simulação-do-mogbe)
+- [Execução do robô físico](#exemplo-do-robô-físico-mogbe)
 - [Comandos adicionais](#comandos-adicionais)
-- [Links úteis](#links-úteis)
 
 ## Direcionamento
 
