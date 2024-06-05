@@ -31,27 +31,27 @@ Confira a [documentação oficial do MOGBE](https://mogbe.readthedocs.io).
 O MOGBE utiliza um computador portátil Raspberry Pi 3B+ em conjunto com Arduino Nano para controle da plataforma física. Um computador externo (dev machine) é utilizado para executar operações complexas de SLAM, navegação autônoma e simulações. Preparei uma trilha para seguir e facilitar a configuração de acordo com sua necessidade. Siga o passos na [documentação oficial do MOGBE](https://mogbe.readthedocs.io/).
 
 1. Você só vai rodar simulações e possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2`:
-    - [Execução de simulação](#execução-de-simulação)
+    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_simulacao.html)
 
 2. Você só vai rodar simulações e não possui uma máquina configurada com Ubuntu 22.04 e ROS 2:
-    - [Configuração de OS: Dev Machine](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/configuracao_dev_machine.html)
-    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/3_area_de_trabalho/index.html)
-    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/4_rodando_exemplo/rodando_simulacao.html)
+    - [Configuração de OS: Dev Machine](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/configuracao_dev_machine.html)
+    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/area_de_trabalho/index.html)
+    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_simulacao.html)
 
 3. Você vai rodar o robô real e simulações, possui a máquina virtual pré-configurada para aulas de Robótica com a imagem `Ubuntu 22.04.4 ROS2` mas precisa configurar o robô real:
-    - [Configuração de OS: Raspberry Pi](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/configuracao_rasp_pi.html)
-    - [Flashing de firmware: Arduino Nano](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/flashing_arduino.html)
-    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/3_area_de_trabalho/index.html)
-    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/4_rodando_exemplo/rodando_simulacao.html)
-    - [Execução do robô físico](https://mogbe.readthedocs.io/pt/latest/4_rodando_exemplo/rodando_robo_fisico.html)
+    - [Configuração de OS: Raspberry Pi](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/configuracao_rasp_pi.html)
+    - [Flashing de firmware: Arduino Nano](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/flashing_arduino.html)
+    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/area_de_trabalho/index.html)
+    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_simulacao.html)
+    - [Execução do robô físico](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_robo_fisico.html)
 
 4. Você vai rodar o robô real e simulações, não possui uma máquina com ambiente Ubuntu 22.04 e ROS 2:
-    - [Configuração de OS: Dev Machine](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/configuracao_dev_machine.html)
-    - [Configuração de OS: Raspberry Pi](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/configuracao_rasp_pi.html)
-    - [Flashing de firmware: Arduino Nano](https://mogbe.readthedocs.io/pt/latest/2_configuracao_inicial/flashing_arduino.html)
-    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/3_area_de_trabalho/index.html)
-    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/4_rodando_exemplo/rodando_simulacao.html)
-    - [Execução do robô físico](https://mogbe.readthedocs.io/pt/latest/4_rodando_exemplo/rodando_robo_fisico.html)
+    - [Configuração de OS: Dev Machine](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/configuracao_dev_machine.html)
+    - [Configuração de OS: Raspberry Pi](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/configuracao_rasp_pi.html)
+    - [Flashing de firmware: Arduino Nano](https://mogbe.readthedocs.io/pt/latest/configuracao_inicial/flashing_arduino.html)
+    - [Configuração da área de trabalho](https://mogbe.readthedocs.io/pt/latest/area_de_trabalho/index.html)
+    - [Execução de simulação](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_simulacao.html)
+    - [Execução do robô físico](https://mogbe.readthedocs.io/pt/latest/rodando_exemplo/rodando_robo_fisico.html)
 
 ## Criando uma área de trabalho para o MOGBE
 
