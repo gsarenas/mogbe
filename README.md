@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Documentation Status](https://readthedocs.org/projects/mogbe/badge/?version=latest)](https://mogbe.readthedocs.io/pt/latest/?badge=latest)
 
-**MOGBE** - **Mo**bile **G**eneral Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
+**MOGBE** - **Mo**bile **G**round Ro**b**ot for **E**ducation: um robô autônomo para aprendizagem de robótica móvel com ROS no ensino superior
 
 Confira a [documentação oficial do MOGBE](https://mogbe.readthedocs.io).
 
